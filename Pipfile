@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 flask = "*"
+alembic = "*"
+sqlalchemy = "*"
+automium-web = "*"
 
 [dev-packages]
 

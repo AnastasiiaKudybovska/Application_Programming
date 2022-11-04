@@ -1,0 +1,11 @@
+Generic single-database configuration.
+
+mysql -u root -p < student_rating.sql
+
+alembic revision --autogenerate -m "Create tables"
+
+alembic upgrade heads
+
+alembic history
+
+alembic downgrade -1
