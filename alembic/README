@@ -1,0 +1,52 @@
+Generic single-database configuration.
+
+mysql -u root -p < student_rating.sql
+
+alembic revision --autogenerate -m "Create tables"
+
+alembic upgrade heads
+
+alembic history
+
+alembic downgrade -1
+
+ ### User
+POST http://localhost:5000/api/student_rating/user
+GET  http://localhost:5000/api/student_rating/user/login
+GET  http://localhost:5000/api/student_rating/users
+GET, PUT, DELETE http://localhost:5000/api/student_rating/user/theUser
+
+ ### Subject
+POST, GET http://localhost:5000/api/student_rating/subjects
+GET, PUT, DELETE http://localhost:5000/api/student_rating/subjects/2
+
+ ### Group
+POST, GET http://localhost:5000/api/student_rating/groups
+GET, PUT, DELETE http://localhost:5000/api/student_rating/groups/1
+
+ ### Teacher
+POST, GET http://localhost:5000/api/student_rating/teachers
+GET, PUT, DELETE http://localhost:5000/api/student_rating/teachers/1
+
+GET http://localhost:5000/api/student_rating/teachers/8/marks
+GET http://localhost:5000/api/student_rating/teachers/8/subjects/1/marks
+
+GET, POST http://localhost:5000/api/student_rating/teachers/8/subjects/1/students/3/marks
+
+GET, PUT, DELETE http://localhost:5000/api/student_rating/teachers/8/subjects/1/students/3/marks/1
+
+ ### Students
+POST, GET http://localhost:5000/api/student_rating/students
+GET, PUT, DELETE http://localhost:5000/api/student_rating/students/1
+
+GET http://localhost:5000/api/student_rating/students/3/marks
+GET http://localhost:5000/api/student_rating/students/3/marks/2
+GET http://localhost:5000/api/student_rating/stude nts/3/subjects/1/marks
+
+GET http://localhost:5000/api/student_rating/students/rating
+ ### Marks
+POST, GET http://localhost:5000/api/student_rating/marks
+GET, PUT, DELETE http://localhost:5000/api/student_rating/marks/1
+
+
+

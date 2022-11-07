@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `teacher` (
 CREATE TABLE IF NOT EXISTS `subject` (
   `id_subject` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `credits` INT NOT NULL
+  `credits` INT NOT NULL,
   PRIMARY KEY (`id_subject`));
 
 
