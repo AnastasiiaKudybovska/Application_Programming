@@ -1,0 +1,1647 @@
+openapi: 3.0.0
+info:
+  version: '3.0'
+  title: Students Rating
+  description: A service for saving and editing student ratings.
+servers: 
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/IRABOYKO098/Students_Rating/3.0
+
+tags:
+  - name: students
+  - name: teachers
+paths: 
+  /students:
+    get:
+        tags:
+          - students
+        description: Obtain information about all students
+        operationId: getStudents
+        responses:
+          200:
+            description: Sucessfully pulled students info
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/StudentAllData'
+          400:
+            description: An Error occured
+          404:
+            description: A page was not found.
+        security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students   
+    post:
+      tags:
+        - students
+      description: Add a new student 
+      operationId: addStudent
+      requestBody:
+        description: Create a new student
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentData'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAllData'
+        '405':
+          description: Invalid input
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+            - write:students
+  /students/{studentId}:
+    get:
+      tags:
+        - students
+      description: Returns a single student
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+    put:
+      tags: 
+       - students
+      parameters:
+          - in: path 
+            name: studentId
+            description: The id of specific user
+            required: true
+            schema:
+              type: integer 
+      requestBody:
+        description: Update an existent student
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentAllDataToUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+            - write:students
+    delete:
+      tags:
+        - students
+      parameters:
+        - in: path 
+          name: studentId
+          description: The id of specific student
+          required: true
+          schema:
+            type: integer
+            example: 5  
+      responses:
+        200:
+          description: Sucessfully deleted a student
+        400:
+          description: Wrong ID
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+            - write:students
+  /students/{studentId}/marks:
+    get:
+      tags:
+        - students
+      description: Returns all marks of single student
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarkData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+            - read:marks
+  /students/{studentId}/marks/{markId}:
+    get:
+      tags:
+        - students
+      description: Returns single mark of single student
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: markId
+          in: path
+          description: ID of mark to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+            - read:marks     
+  /students/{studentId}/subject/{subjectId}/marks:
+    get:
+      tags:
+        - students
+      description: Returns all marks of single student
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64     
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mark'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:students
+            - read:marks          
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+            description:  User created
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/User'
+        400:
+            description: An Error occured
+        404:
+            description: A page was not found.
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+        404: 
+          description: error 404
+      security:
+        - bearerAuth: []
+  /user/{username}:
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []    
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent user 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Not Allowed
+      security:
+        - bearerAuth: []    
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found    
+      security:
+        - bearerAuth: []    
+  /teachers:
+    get:
+        tags:
+          - teachers
+        description: Obtain information about all teachers
+        operationId: getTeachers
+        responses:
+          200:
+            description: Sucessfully pulled teachers info
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TeacherAllData'
+          400:
+            description: An Error occured
+          404:
+            description: A page was not found.
+        security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+    post:
+      tags:
+        - teachers
+      description: Add a new teacher 
+      operationId: addTeacher
+      requestBody:
+        description: Create a new teacher
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherData'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherAllData'
+        '405':
+          description: Invalid input
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - write:teachers
+  /teachers/{teacherId}:
+    get:
+      tags:
+        - teachers
+      description: Returns a single teacher
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+    put:
+      tags: 
+       - teachers
+      parameters:
+          - in: path 
+            name: teacherId
+            description: The id of specific teacher
+            required: true
+            schema:
+              type: integer 
+      requestBody:
+        description: Update an existent teacher 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherAllDataToUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - write:teachers
+    delete:
+      tags:
+        - teachers
+      parameters:
+        - in: path 
+          name: teacherId
+          description: The id of specific teacher
+          required: true
+          schema:
+            type: integer
+            example: 5  
+      responses:
+        200:
+          description: Sucessfully deleted a teacher
+        400:
+          description: Wrong ID
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - write:teachers        
+  /teachers/{teacherId}/marks:
+    get:
+      tags:
+        - teachers
+      description: Returns all marks of single teacher
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mark'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - read:marks
+  # /teacher/{teacherId}/marks/{markId}:
+  #   get:
+  #     tags:
+  #       - teachers
+  #     description: Returns single mark of single student
+  #     parameters:
+  #       - name: teacherId
+  #         in: path
+  #         description: ID of teacher to return
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #       - name: markId
+  #         in: path
+  #         description: ID of mark to return
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64  
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Mark'
+  #       '400':
+  #         description: Invalid ID supplied
+  #       '404':
+  #         description: Student not found
+  #     security: 
+  #       - bearerAuth: []
+  #         system_auth:
+  #           - read:teachers
+  #           - read:marks     
+    # put:
+    #   tags: 
+    #   - teachers
+    #   parameters:
+    #     - name: teacherId
+    #       in: path
+    #       description: ID of teacher to return
+    #       required: true
+    #       schema:
+    #         type: integer
+    #         format: int64
+    #     - name: markId
+    #       in: path
+    #       description: ID of mark to return
+    #       required: true
+    #       schema:
+    #         type: integer
+    #         format: int64  
+    #   requestBody:
+    #     description: Update an existent mark
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/Mark'
+    #     required: true
+    #   responses:
+    #     '200':
+    #       description: Successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Mark'
+    #     '400':
+    #       description: Invalid ID supplied
+    #     '404':
+    #       description: Student not found
+    #     '405':
+    #       description: Validation exception
+    #   security: 
+    #     - bearerAuth: []
+    #       system_auth:
+    #         - read:teachers
+    #         - read:marks
+    #         - write:marks
+            
+  /teachers/{teacherId}/subjects/{subjectId}/marks:
+    get:
+      tags:
+        - teachers
+      description: Returns all marks of single teacher and subject
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64     
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mark'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - read:marks                    
+  /teachers/{teacherId}/subjects/{subjectId}/students/{studentId}/marks:
+    get:
+      tags:
+        - teachers
+      description: Returns all marks of single teacher and subject
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64     
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mark'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - read:marks 
+    post:
+      tags: 
+      - teachers
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64       
+      requestBody:
+        description: Update an existent mark
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkToTeacherPost'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - read:marks
+            - write:marks   
+  /teachers/{teacherId}/subjects/{subjectId}/students/{studentId}/marks/{markId}:
+    get:
+      tags:
+        - teachers
+      description: Returns all marks of single teacher and subject for single student
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64     
+        - name: markId
+          in: path
+          description: ID of mark to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarkAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - read:marks 
+    put:
+      tags: 
+      - teachers
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+        - name: markId
+          in: path
+          description: ID of mark to return
+          required: true
+          schema:
+            type: integer
+            format: int64  
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64       
+      requestBody:
+        description: Update an existent mark
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkToTeacherUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkAllData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:teachers
+            - read:marks
+            - write:marks        
+    delete:
+      tags: 
+      - teachers
+      parameters:
+        - name: teacherId
+          in: path
+          description: ID of teacher to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: studentId
+          in: path
+          description: ID of student to return
+          required: true
+          schema:
+            type: integer
+            format: int64    
+        - name: markId
+          in: path
+          description: ID of mark to return
+          required: true
+          schema:
+            type: integer
+            format: int64  
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64       
+      responses:
+        200:
+          description: Sucessfully deleted a mark
+        400:
+          description: Wrong ID
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks
+            - write:marks  
+                    
+          
+  /marks:
+    get:
+        tags:
+          - marks
+        description: Obtain information about all marks
+        operationId: getMarks
+        responses:
+          200:
+            description: Sucessfully pulled marks info
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/MarkData'
+          400:
+            description: An Error occured
+          404:
+            description: A page was not found.
+        security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks   
+    post:
+      tags:
+        - marks
+      description: Add a new mark 
+      operationId: addMark
+      requestBody:
+        description: Create a new mark
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mark'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkData'
+        '405':
+          description: Invalid input
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks
+            - write:marks
+  /marks/{markId}:
+    get:
+      tags:
+        - marks
+      description: Returns a single mark
+      parameters:
+        - name: markId
+          in: path
+          description: ID of mark to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks
+    put:
+      tags: 
+      - marks
+      parameters:
+          - in: path 
+            name: markId
+            description: The id of specific mark
+            required: true
+            schema:
+              type: integer 
+      requestBody:
+        description: Update an existent mark
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mark'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks
+            - write:marks
+    delete:
+      tags:
+        - marks
+      parameters:
+        - in: path 
+          name: markId
+          description: The id of specific mark
+          required: true
+          schema:
+            type: integer
+            example: 5  
+      responses:
+        200:
+          description: Sucessfully deleted a mark
+        400:
+          description: Wrong ID
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks
+            - write:marks        
+            
+  /subjects:
+    get:
+        tags:
+          - subjects
+        description: Obtain information about all subjects
+        operationId: getSubjects
+        responses:
+          200:
+            description: Sucessfully pulled subject info
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SubjectData'
+          400:
+            description: An Error occured
+          404:
+            description: A page was not found.
+        security: 
+        - bearerAuth: []
+          system_auth:
+            - read:subjects   
+    post:
+      tags:
+        - subjects
+      description: Add a new subject
+      operationId: addSubject
+      requestBody:
+        description: Create a new subject
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subject'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectData'
+        '405':
+          description: Invalid input
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:subjects
+            - write:subject
+  /subjects/{subjectId}:
+    get:
+      tags:
+        - subjects
+      description: Returns a single subject
+      parameters:
+        - name: subjectId
+          in: path
+          description: ID of subject to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subject'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:subject
+    put:
+      tags: 
+      - subjects
+      parameters:
+          - in: path 
+            name: subjectId
+            description: The id of specific subject
+            required: true
+            schema:
+              type: integer 
+      requestBody:
+        description: Update an existent subject
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subject'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subject'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:subject
+            - write:subject
+    delete:
+      tags:
+        - subjects
+      parameters:
+        - in: path 
+          name: subjectId
+          description: The id of specific subject
+          required: true
+          schema:
+            type: integer
+            example: 5  
+      responses:
+        200:
+          description: Sucessfully deleted a subject
+        400:
+          description: Wrong ID
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:subject
+            - write:subject    
+  /students/rating:
+    get:
+        tags:
+          - students
+        description: Return a students rating
+        responses:
+          200:
+            description: Sucessfully pulled rating info
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/StudentData'
+          400:
+            description: An Error occured
+          404:
+            description: A page was not found.
+        security: 
+        - bearerAuth: []
+          system_auth:
+            - read:marks
+            
+  /groups:
+    get:
+        tags:
+          - groups
+        description: Obtain information about all groups
+        operationId: getGroups
+        responses:
+          200:
+            description: Sucessfully pulled groups info
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/GroupData'
+          400:
+            description: An Error occured
+          404:
+            description: A page was not found.
+        security: 
+        - bearerAuth: []
+          system_auth:
+            - read:groups   
+    post:
+      tags:
+        - groups
+      description: Add a new group
+      operationId: addGroup
+      requestBody:
+        description: Create a new group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupData'
+        '405':
+          description: Invalid input
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:group
+            - write:group
+  /groups/{groupId}:
+    get:
+      tags:
+        - groups
+      description: Returns a single group
+      parameters:
+        - name: groupId
+          in: path
+          description: ID of group to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                  $ref: '#/components/schemas/GroupData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Group not found
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:group
+    put:
+      tags: 
+      - groups
+      parameters:
+          - in: path 
+            name: groupId
+            description: The id of specific group
+            required: true
+            schema:
+              type: integer 
+      requestBody:
+        description: Update an existent Group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupData'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: group not found
+        '405':
+          description: Validation exception
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:group
+            - write:group
+    delete:
+      tags:
+        - groups
+      parameters:
+        - in: path 
+          name: groupId
+          description: The id of specific group
+          required: true
+          schema:
+            type: integer
+            example: 5  
+      responses:
+        200:
+          description: Sucessfully deleted a group
+        400:
+          description: Wrong ID
+      security: 
+        - bearerAuth: []
+          system_auth:
+            - read:group
+            - write:group           
+  
+      
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # name of the header, query parameter or cookie
+    system_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:students: modify students
+            read:students: read students
+            write:teachers: modify teachers
+            read:teachers: read teachers
+            read:marks: read marks
+            write:marks: modify marks
+            
+  schemas:
+#    UserCr:
+#      type: object
+#      properties:
+#        id_user:
+#          type: integer
+#          format: int64
+#          example: 10
+#       username:
+#         type: string
+        #   example: theUser
+        # password:
+        #   type: string
+        #   example: '12345'
+        # first_name:
+        #   type: string
+        #   example: John
+        # last_name:
+        #   type: string
+        #   example: James
+        # email:
+        #   type: string
+        #   example: john@email.com
+        # phone:
+        #   type: string
+        #   example: '380971893719'
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        password:
+          type: string
+          example: '12345'
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: '12345'      
+    UserData:
+      type: object
+      properties:
+        id_user:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: theUser
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: '12345'  
+    StudentData:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        date_of_birthday:
+          type: string
+          example: "2003-10-10"
+        date_of_entry:
+          type: string
+          example: "2021-09-11"
+        date_of_graduation:
+          type: string
+          example: "2025-07-25"
+        group_id:
+          type: integer 
+          example: 1
+    StudentAllData:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserData'
+        date_of_birthday:
+          type: string
+          example: "2003-10-10"
+        date_of_entry:
+          type: string
+          example: "2021-09-11"
+        date_of_graduation:
+          type: string
+          example: "2025-07-25"
+        group:
+          $ref: '#/components/schemas/GroupData'
+    StudentAllDataToUpdate:
+      type: object
+      properties:
+        date_of_birthday:
+          type: string
+          example: "2003-10-10"
+        date_of_entry:
+          type: string
+          example: "2021-09-11"
+        date_of_graduation:
+          type: string
+          example: "2025-07-25"
+        group_id:
+          type: integer
+          example: 1
+    Group:
+       type: object
+       properties:
+         name:
+          type: string
+          example: CS-215
+    GroupData:
+       type: object
+       properties:
+         id_group:
+          type: integer
+          example: 1
+         name:
+          type: string
+          example: CS-215
+    Subject:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Aplication Programming
+        credits: 
+          type: integer 
+          example: 4
+    SubjectData:
+      type: object
+      properties:
+        id_subject: 
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Aplication Programming
+        credits: 
+          type: integer 
+          example: 4
+    Mark:
+      type: object
+      description: Model containing mark info
+      properties:
+        mark:
+          type: integer
+          example: 5
+        date:
+          type: string
+          example: "2022-11-01"
+        subject_id:
+          type: integer
+          example: 1
+        student_id:
+          type: integer
+          example: 1
+        teacher_id:
+          type: integer
+          example: 1
+    MarkData:
+      type: object
+      description: Model containing mark info
+      properties:
+        id_mark:
+          type: integer
+          example: 1
+        mark:
+          type: integer
+          example: 5
+        date:
+          type: string
+          example: "2022-11-01"
+        subject_id:
+          type: integer
+          example: 1
+        student_id:
+          type: integer
+          example: 1
+        teacher_id:
+          type: integer
+          example: 1  
+    MarkAllData:
+      type: object
+      description: Model containing mark info
+      properties:
+        id_mark:
+          type: integer
+          example: 1
+        mark:
+          type: integer
+          example: 5
+        date:
+          type: string
+          example: "2022-11-01"
+        subject_id:
+          $ref: '#/components/schemas/SubjectData'
+        student_id:
+          $ref: '#/components/schemas/StudentAllData'
+        teacher_id:
+          $ref: '#/components/schemas/TeacherAllData'  
+    MarkToTeacherUpdate:
+      type: object
+      description: Model containing mark info
+      properties:
+        mark:
+          type: integer
+          example: 5
+        date:
+          type: string
+          example: "2022-11-01"
+        subject_id:
+          type: integer
+          example: 1
+        student_id:
+          type: integer
+          example: 1
+    MarkToTeacherPost:
+      type: object
+      properties:
+        mark:
+          type: integer
+          example: 5
+        date:
+          type: string
+          example: "2022-11-01"
+    TeacherData:
+      type: object
+      properties:
+        user_id: 
+          type: integer
+          example: 1
+        date_of_employment:
+          type: string
+          example: 2021-10-10
+        qualification:
+          type: string
+          example: Professor
+    TeacherAllData:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserData'
+        date_of_employment:
+          type: string
+        qualification:
+          type: string 
+    TeacherAllDataToUpdate:
+      type: object
+      properties:
+       # user:
+        #  $ref: '#/components/schemas/User'
+        date_of_employment:
+          type: string
+        qualification:
+          type: string     

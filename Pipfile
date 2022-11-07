@@ -8,6 +8,8 @@ flask = "*"
 alembic = "*"
 sqlalchemy = "*"
 automium-web = "*"
+flask-restful = "*"
+deserialize = "*"
 
 [dev-packages]
 
