@@ -1,4 +1,4 @@
-from models import Session, User, Group, Student, Teacher, Subject, Mark
+from models import Session, User, Group, Student, Teacher, Subject, Mark, Role
 
 session = Session()
 
@@ -11,6 +11,9 @@ user3 = User(username='t.parker.robert', password='221122', first_name='Robert',
 user4 = User(username='t.emily.taylor', password='331133', first_name='Emily', last_name='Taylor',
              email='emilytaylor@gmail.com', phone='380961285103')
 
+role = session.query(Role).filter_by(id=1).first()  # admin role
+
+user1.roles = [role]  # make user1 admin
 session.add(user1)
 session.add(user2)
 session.add(user3)

@@ -10,6 +10,15 @@ sqlalchemy = "*"
 automium-web = "*"
 flask-restful = "*"
 deserialize = "*"
+blueprint = "*"
+jsonify = "*"
+django-request = "*"
+marshmallow = "*"
+flask-bcrypt = "*"
+pymysql = "*"
+flask-jwt-extended = "*"
+flask-authorize = "*"
+flask-login = "*"
 
 [dev-packages]
 
