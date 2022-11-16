@@ -1,0 +1,3 @@
+class Config:
+    SECRET_KEY = 'a193707289464879b4ecf8a1c3ce3786'
+    JWT_SECRET_KEY = '34y82hg28uy239htf22h89hg2'

@@ -13,15 +13,22 @@ class UserData(Schema):
     phone = fields.String()
 
 
+class UserLogin(Schema):
+    username = fields.String()
+    password = fields.String()
+
+
 class UserSchema(Schema):
     username = fields.String()
     password = fields.Function(
-        deserialize=lambda obj: generate_password_hash(obj), load_only=True
+        deserialize=lambda obj: generate_password_hash(obj).decode('utf8'), load_only=True
     )
     first_name = fields.String()
     last_name = fields.String()
     email = fields.String(validate=validate.Email())
     phone = fields.String()
+
+
 
 
 class SubjectData(Schema):
